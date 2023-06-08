@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mask_app/component/main_appbar.dart';
+import 'package:mask_app/component/main_drawer.dart';
 import 'package:mask_app/const/colors.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: primaryColor,
+      drawer: MainDrawer(),
       body: CustomScrollView(
         slivers: [
           MainAppBar(),
