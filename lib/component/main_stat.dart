@@ -18,6 +18,7 @@ class MainStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const ts = TextStyle(color: Colors.black);
+    //리스트뷰에 세개만 넣는법
     return SizedBox(
       width: width,
       child: Column(
