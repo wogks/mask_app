@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mask_app/component/card_title.dart';
 import 'package:mask_app/component/main_card.dart';
 import 'package:mask_app/component/main_stat.dart';
-import 'package:mask_app/const/colors.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({super.key});
