@@ -5,36 +5,44 @@ class MainStat extends StatelessWidget {
   final String imgPath;
   final String level;
   final String stat;
+  final double width;
   const MainStat({
     super.key,
     required this.category,
     required this.imgPath,
     required this.level,
     required this.stat,
+    required this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     const ts = TextStyle(color: Colors.black);
-    return Column(
-      children: [
-        Text(
-          category,
-          style: ts,
-        ),
-        Image.asset(
-          imgPath,
-          width: 50,
-        ),
-        Text(
-          level,
-          style: ts,
-        ),
-        Text(
-          stat,
-          style: ts,
-        ),
-      ],
+    return SizedBox(
+      width: width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            category,
+            style: ts,
+          ),
+          const SizedBox(height: 8),
+          Image.asset(
+            imgPath,
+            width: 50,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            level,
+            style: ts,
+          ),
+          Text(
+            stat,
+            style: ts,
+          ),
+        ],
+      ),
     );
   }
 }
