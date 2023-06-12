@@ -1,28 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mask_app/const/colors.dart';
+import 'package:mask_app/const/regions.dart';
 
-const regions = [
-  '서울',
-  '경기',
-  '대구',
-  '충남',
-  '인천',
-  '대전',
-  '경북',
-  '세종',
-  '광주',
-  '전북',
-  '강원',
-  '울산',
-  '전남',
-  '부산',
-  '제주',
-  '충북',
-  '경남',
-];
+typedef OnRegionTap = void Function(String region);
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({super.key});
+  final OnRegionTap onRegionTap;
+  final String selectedRegion;
+  const MainDrawer({
+    super.key,
+    required this.onRegionTap,
+    required this.selectedRegion,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +35,10 @@ class MainDrawer extends StatelessWidget {
                   //선택됐을때 글자색
                   selectedColor: Colors.black,
                   //셀렉티드에 입력한 값들이 트루를 하면 반영이 된다
-                  selected: e == '서울',
-                  onTap: () {},
+                  selected: e == selectedRegion,
+                  onTap: () {
+                    onRegionTap(e);
+                  },
                   title: Text(e),
                 ),
               )

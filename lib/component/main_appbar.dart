@@ -6,7 +6,13 @@ import 'package:mask_app/utils/data_utils.dart';
 class MainAppBar extends StatelessWidget {
   final StatusModel status;
   final StatModel stat;
-  const MainAppBar({super.key, required this.status, required this.stat});
+  final String region;
+  const MainAppBar({
+    super.key,
+    required this.status,
+    required this.stat,
+    required this.region,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +31,8 @@ class MainAppBar extends StatelessWidget {
             margin: const EdgeInsets.only(top: kToolbarHeight),
             child: Column(
               children: [
-                const Text(
-                  '서울',
+                Text(
+                  region,
                   style: ts,
                 ),
                 Text(

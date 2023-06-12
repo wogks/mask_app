@@ -4,6 +4,7 @@ import 'package:mask_app/component/hourly_card.dart';
 import 'package:mask_app/component/main_appbar.dart';
 import 'package:mask_app/component/main_drawer.dart';
 import 'package:mask_app/const/colors.dart';
+import 'package:mask_app/const/regions.dart';
 import 'package:mask_app/model/stat_model.dart';
 import 'package:mask_app/repository/stat_repository.dart';
 import 'package:mask_app/utils/data_utils.dart';
@@ -16,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String region = regions[0];
+
   Future<List<StatModel>> fetchData() async {
     final statModels = await StatRepository.fetchData();
     return statModels;
@@ -25,7 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      drawer: const MainDrawer(),
+      drawer: MainDrawer(
+        selectedRegion: region,
+        onRegionTap: (region) {
+          setState(() {
+            this.region = region;
+            Navigator.of(context).pop();
+          });
+        },
+      ),
       body: FutureBuilder<List<StatModel>>(
           future: fetchData(),
           builder: (context, snapshot) {
@@ -49,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return CustomScrollView(
               slivers: [
                 MainAppBar(
+                  region: region,
                   status: status,
                   stat: recentStat,
                 ),
