@@ -5,6 +5,7 @@ import 'package:mask_app/component/hourly_card.dart';
 import 'package:mask_app/component/main_appbar.dart';
 import 'package:mask_app/component/main_drawer.dart';
 import 'package:mask_app/const/colors.dart';
+import 'package:mask_app/model/stat_model.dart';
 
 import '../const/data.dart';
 
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   fetchData() async {
     final response = await Dio().get(
-      'http://apis.data.go.kr/B552584/UlfptcaAlarmInqireSvc/getUlfptcaAlarmInfo',
+      'http://apis.data.go.kr/B552584/ArpltnStatsSvc/getCtprvnMesureLIst',
       queryParameters: {
         'serviceKey': serviceKey,
         'returnType': 'json',
@@ -37,7 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
 
-    print(response.data);
+    print(
+      response.data['response']['body']['items'].map(
+        (item) => StatModel.fromJson(json: item),
+      ),
+    );
   }
 
   @override
