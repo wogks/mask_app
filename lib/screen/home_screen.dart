@@ -4,9 +4,9 @@ import 'package:mask_app/component/hourly_card.dart';
 import 'package:mask_app/component/main_appbar.dart';
 import 'package:mask_app/component/main_drawer.dart';
 import 'package:mask_app/const/colors.dart';
-import 'package:mask_app/const/status_level.dart';
 import 'package:mask_app/model/stat_model.dart';
 import 'package:mask_app/repository/stat_repository.dart';
+import 'package:mask_app/utils/data_utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,10 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
             List<StatModel> stats = snapshot.data!;
             StatModel recentStat = stats[0];
-            final status = statusLevel
-                .where((element) => element.minFineDust < recentStat.seoul)
-                .last;
-            print(recentStat.seoul);
+            final status = DataUtils.getCurrentStatusFromStat(
+              itemCode: ItemCode.PM10,
+              value: recentStat.seoul,
+            );
             return CustomScrollView(
               slivers: [
                 MainAppBar(
