@@ -5,6 +5,7 @@ import 'package:mask_app/component/main_appbar.dart';
 import 'package:mask_app/component/main_drawer.dart';
 import 'package:mask_app/const/colors.dart';
 import 'package:mask_app/const/regions.dart';
+import 'package:mask_app/model/stat_and_status_model.dart';
 import 'package:mask_app/model/stat_model.dart';
 import 'package:mask_app/repository/stat_repository.dart';
 import 'package:mask_app/utils/data_utils.dart';
@@ -74,6 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCode: ItemCode.PM10,
               value: pm10RecentStat.seoul,
             );
+            final ssModel = stats.keys.map((key) {
+              final value = stats[key]!;
+              final stat = value[0];
+              return StatAndStatusModel(
+                itemCode: key,
+                status: DataUtils.getCurrentStatusFromStat(
+                  value: stat.getLevelFromRegion(region),
+                  itemCode: key,
+                ),
+                stat: stat,
+              );
+            }).toList();
             return CustomScrollView(
               slivers: [
                 MainAppBar(
@@ -81,12 +94,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   status: status,
                   stat: pm10RecentStat,
                 ),
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      CategoryCard(),
-                      SizedBox(height: 16),
-                      HourlyCard(),
+                      CategoryCard(models: ssModel, region: region),
+                      const SizedBox(height: 16),
+                      const HourlyCard(),
                     ],
                   ),
                 )

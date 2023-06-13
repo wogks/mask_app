@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mask_app/component/card_title.dart';
 import 'package:mask_app/component/main_card.dart';
 import 'package:mask_app/component/main_stat.dart';
+import 'package:mask_app/model/stat_and_status_model.dart';
+import 'package:mask_app/utils/data_utils.dart';
 
 class CategoryCard extends StatelessWidget {
-  const CategoryCard({super.key});
+  final String region;
+  final List<StatAndStatusModel> models;
+  const CategoryCard({super.key, required this.region, required this.models});
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +30,27 @@ class CategoryCard extends StatelessWidget {
                   //리스트뷰에서 한페이지식 넘어가게 하는 법
                   physics: const PageScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  children: List.generate(
-                    20,
-                    (index) => MainStat(
-                      width: constraint.maxWidth / 3,
-                      category: '미세먼지',
-                      imgPath: 'asset/img/best.png',
-                      level: '최고',
-                      stat: '0㎛/m',
-                    ),
-                  ),
+                  children: models
+                      .map((e) => MainStat(
+                            category: DataUtils.itemCodeKrString(
+                                itemCode: e.itemCode),
+                            imgPath: e.status.imagePath,
+                            level: e.status.label,
+                            stat:
+                                '${e.stat.getLevelFromRegion(region)}${DataUtils.getUnitFromItemCode(itemCode: e.itemCode)}',
+                            width: constraint.maxWidth / 3,
+                          ))
+                      .toList(),
+                  // children: List.generate(
+                  //   20,
+                  //   (index) => MainStat(
+                  //     width: constraint.maxWidth / 3,
+                  //     category: '미세먼지',
+                  //     imgPath: 'asset/img/best.png',
+                  //     level: '최고',
+                  //     stat: '0㎛/m',
+                  //   ),
+                  // ),
                 ),
               )
             ],
