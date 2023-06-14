@@ -3,7 +3,6 @@ import 'package:mask_app/component/category_card.dart';
 import 'package:mask_app/component/hourly_card.dart';
 import 'package:mask_app/component/main_appbar.dart';
 import 'package:mask_app/component/main_drawer.dart';
-import 'package:mask_app/const/colors.dart';
 import 'package:mask_app/const/regions.dart';
 import 'package:mask_app/model/stat_and_status_model.dart';
 import 'package:mask_app/model/stat_model.dart';
@@ -45,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
       drawer: MainDrawer(
         selectedRegion: region,
         onRegionTap: (region) {
@@ -87,23 +85,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 stat: stat,
               );
             }).toList();
-            return CustomScrollView(
-              slivers: [
-                MainAppBar(
-                  region: region,
-                  status: status,
-                  stat: pm10RecentStat,
-                ),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      CategoryCard(models: ssModel, region: region),
-                      const SizedBox(height: 16),
-                      const HourlyCard(),
-                    ],
+            return Container(
+              color: status.primaryColor,
+              child: CustomScrollView(
+                slivers: [
+                  MainAppBar(
+                    region: region,
+                    status: status,
+                    stat: pm10RecentStat,
                   ),
-                )
-              ],
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        CategoryCard(
+                          models: ssModel,
+                          region: region,
+                          darkColor: status.darkColor,
+                          lightColor: status.lightColor,
+                        ),
+                        const SizedBox(height: 16),
+                        HourlyCard(
+                          darkColor: status.darkColor,
+                          lightColor: status.lightColor,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             );
           }),
     );

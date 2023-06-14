@@ -3,15 +3,19 @@ import 'package:mask_app/component/card_title.dart';
 import 'package:mask_app/component/main_card.dart';
 
 class HourlyCard extends StatelessWidget {
-  const HourlyCard({super.key});
+  final Color darkColor;
+  final Color lightColor;
+  const HourlyCard({super.key, required this.darkColor, required this.lightColor});
 
   @override
   Widget build(BuildContext context) {
     return MainCard(
+      backgroundcolor: lightColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const CardTitle(
+           CardTitle(
+             backgroundColor: darkColor,
             title: '시간별 미세먼지',
           ),
           Column(

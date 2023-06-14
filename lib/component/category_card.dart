@@ -8,13 +8,21 @@ import 'package:mask_app/utils/data_utils.dart';
 class CategoryCard extends StatelessWidget {
   final String region;
   final List<StatAndStatusModel> models;
-  const CategoryCard({super.key, required this.region, required this.models});
+  final Color darkColor;
+  final Color lightColor;
+  const CategoryCard(
+      {super.key,
+      required this.region,
+      required this.models,
+      required this.darkColor,
+      required this.lightColor});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 160,
       child: MainCard(
+        backgroundcolor: lightColor,
         //리스트뷰에 3개씩만 나오게 하는법
         //너비의 크기를 알고싶은 위젯을 레이아웃 빌더에 감싼다
         child: LayoutBuilder(builder: (context, constraint) {
@@ -22,8 +30,9 @@ class CategoryCard extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const CardTitle(
+               CardTitle(
                 title: '종류별 통계',
+                backgroundColor: darkColor,
               ),
               Expanded(
                 child: ListView(

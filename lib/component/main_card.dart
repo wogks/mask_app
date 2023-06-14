@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mask_app/const/colors.dart';
 
 class MainCard extends StatelessWidget {
   final Widget child;
-  const MainCard({super.key, required this.child});
+  final Color backgroundcolor;
+  const MainCard(
+      {super.key, required this.child, required this.backgroundcolor});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class MainCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16))),
-      color: lightColor,
+      color: backgroundcolor,
       child: child,
     );
   }
