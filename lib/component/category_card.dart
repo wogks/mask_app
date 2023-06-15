@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mask_app/component/card_title.dart';
 import 'package:mask_app/component/main_card.dart';
 import 'package:mask_app/component/main_stat.dart';
-import 'package:mask_app/model/stat_and_status_model.dart';
 import 'package:mask_app/utils/data_utils.dart';
 
 class CategoryCard extends StatelessWidget {
   final String region;
-  final List<StatAndStatusModel> models;
   final Color darkColor;
   final Color lightColor;
   const CategoryCard(
       {super.key,
       required this.region,
-      required this.models,
       required this.darkColor,
       required this.lightColor});
 
@@ -30,7 +27,7 @@ class CategoryCard extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-               CardTitle(
+              CardTitle(
                 title: '종류별 통계',
                 backgroundColor: darkColor,
               ),

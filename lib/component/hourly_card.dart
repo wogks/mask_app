@@ -10,13 +10,16 @@ class HourlyCard extends StatelessWidget {
   final String category;
   final List<StatModel> stats;
   final String region;
-  const HourlyCard(
-      {super.key,
-      required this.darkColor,
-      required this.lightColor,
-      required this.category,
-      required this.stats,
-      required this.region});
+  final ItemCode itemCode;
+  const HourlyCard({
+    super.key,
+    required this.darkColor,
+    required this.lightColor,
+    required this.category,
+    required this.stats,
+    required this.region,
+    required this.itemCode,
+  });
 
   @override
   Widget build(BuildContext context) {
