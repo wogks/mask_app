@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mask_app/component/category_card.dart';
 import 'package:mask_app/component/hourly_card.dart';
 import 'package:mask_app/component/main_appbar.dart';
@@ -22,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController scrollController = ScrollController();
 
   Future<Map<ItemCode, List<StatModel>>> fetchData() async {
-    Map<ItemCode, List<StatModel>> stats = {};
     List<Future> futures = [];
     for (ItemCode itemCode in ItemCode.values) {
       //await를 걸지 않는다
@@ -37,10 +37,22 @@ class _HomeScreenState extends State<HomeScreen> {
     for (var i = 0; i < results.length; i++) {
       final key = ItemCode.values[i];
       final value = results[i];
-      stats.addAll({key: value});
+
+      final box = Hive.box<StatModel>(key.name);
+
+      for (StatModel stat in value) {
+        box.put(stat.dataTime.toString(), stat);
+      }
     }
 
-    return stats;
+    return ItemCode.values.fold<Map<ItemCode, List<StatModel>>>({},
+        (previousValue, itemCode) {
+      final box = Hive.box<StatModel>(itemCode.name);
+      previousValue.addAll({
+        itemCode: box.values.toList(),
+      });
+      return previousValue;
+    });
   }
 
   scrollListener() {

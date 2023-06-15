@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mask_app/model/stat_model.dart';
-import 'package:mask_app/test_screen.dart';
+import 'package:mask_app/screen/home_screen.dart';
 
 const testBox = 'test';
 
@@ -14,7 +14,7 @@ void main() async {
   Hive.registerAdapter<ItemCode>(ItemCodeAdapter());
 
   for (ItemCode itemCode in ItemCode.values) {
-    await Hive.openBox(itemCode.name);
+    await Hive.openBox<StatModel>(itemCode.name);
   }
 
   //어떤박스를 열지 정한다.
@@ -22,7 +22,7 @@ void main() async {
   runApp(
     MaterialApp(
       theme: ThemeData(fontFamily: 'sunflower'),
-      home: const TestScreen(),
+      home: const HomeScreen(),
     ),
   );
 }
