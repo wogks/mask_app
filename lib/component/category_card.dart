@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mask_app/component/card_title.dart';
 import 'package:mask_app/component/main_card.dart';
 import 'package:mask_app/component/main_stat.dart';
+import 'package:mask_app/model/stat_model.dart';
 import 'package:mask_app/utils/data_utils.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -36,15 +38,25 @@ class CategoryCard extends StatelessWidget {
                   //리스트뷰에서 한페이지식 넘어가게 하는 법
                   physics: const PageScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  children: models
-                      .map((e) => MainStat(
-                            category: DataUtils.itemCodeKrString(
-                                itemCode: e.itemCode),
-                            imgPath: e.status.imagePath,
-                            level: e.status.label,
-                            stat:
-                                '${e.stat.getLevelFromRegion(region)}${DataUtils.getUnitFromItemCode(itemCode: e.itemCode)}',
-                            width: constraint.maxWidth / 3,
+                  children: ItemCode.values
+                      .map((ItemCode itemCode) => ValueListenableBuilder<Box>(
+                            valueListenable:
+                                Hive.box<StatModel>(itemCode.name).listenable(),
+                            builder: (context, box, child) {
+                              final stat = box.values.last;
+                              final status = DataUtils.getCurrentStatusFromStat(
+                                  itemCode: itemCode,
+                                  value: stat.getLevelFromRegion(region));
+                              return MainStat(
+                                category: DataUtils.itemCodeKrString(
+                                    itemCode: itemCode),
+                                imgPath: status.imagePath,
+                                level: status.label,
+                                stat:
+                                    '${stat.getLevelFromRegion(region)}${DataUtils.getUnitFromItemCode(itemCode: itemCode)}',
+                                width: constraint.maxWidth / 3,
+                              );
+                            },
                           ))
                       .toList(),
                   // children: List.generate(
