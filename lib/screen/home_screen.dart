@@ -32,9 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
         now.hour,
       );
       final box = Hive.box<StatModel>(ItemCode.PM10.name);
-      final recent = box.values.last;
 
-      if (recent.dataTime.isAtSameMomentAs(fetchTime)) {
+      if (box.values.isNotEmpty &&
+          (box.values.last).dataTime.isAtSameMomentAs(fetchTime)) {
         print('이미 최핀');
         return;
       }
@@ -100,11 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Box>(
       valueListenable: Hive.box<StatModel>(ItemCode.PM10.name).listenable(),
-      builder: (
-        context,
-        box,
-        child,
-      ) {
+      builder: (context, box, child) {
+        if (box.values.isEmpty) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         final stat = (box.values.toList().last as StatModel);
         final status = DataUtils.getCurrentStatusFromStat(
           itemCode: ItemCode.PM10,
