@@ -22,6 +22,20 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController scrollController = ScrollController();
 
   Future<void> fetchData() async {
+    final now = DateTime.now();
+    final fetchTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+    );
+    final box = Hive.box<StatModel>(ItemCode.PM10.name);
+    final recent = box.values.last;
+
+    if (recent.dataTime.isAtSameMomentAs(fetchTime)) {
+      print('이미 최핀');
+      return;
+    }
     List<Future> futures = [];
     for (ItemCode itemCode in ItemCode.values) {
       //await를 걸지 않는다
@@ -41,6 +55,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
       for (StatModel stat in value) {
         box.put(stat.dataTime.toString(), stat);
+      }
+
+      final allKeys = box.keys.toList();
+
+      if (allKeys.length > 24) {
+        //start = 시작 인덱스 end = 끝 인덱스
+        final deleteKeys = allKeys.sublist(0, allKeys.length - 24);
+
+        box.deleteAll(deleteKeys);
       }
     }
   }
@@ -70,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Box>(
-      valueListenable: Hive.box(ItemCode.PM10.name).listenable(),
+      valueListenable: Hive.box<StatModel>(ItemCode.PM10.name).listenable(),
       builder: (
         context,
         box,
